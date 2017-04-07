@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html><head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <title>Drag and drop fake heatmap generator w/ Javascript and HTMLCanvas by Robert Ivan</title>
+    <meta charset="utf-8">
+    <meta name="robots" content="index, follow">
+    <meta name="keywords" content="fake, heatmap, javascript, html5">
+    <meta name="description" content="Drag and drop images, then create your own heatmap - analytics be damned.">
+    <script async="" src="Drag%20and%20drop%20fake%20heatmap%20generator%20w_%20Javascript%20and%20HTMLCanvas%20by%20Robert%20Ivan_files/analytics.js"></script><script type="text/javascript" src="Drag%20and%20drop%20fake%20heatmap%20generator%20w_%20Javascript%20and%20HTMLCanvas%20by%20Robert%20Ivan_files/logic.js"></script>
+    <style>
+    body{
+        width: 100%;
+        overflow:scroll;
+        font-family:Arial;
+        background: #333;
+        color: white;
+    }
+    #codeArea{
+        width:800px;
+        float:left;
+        position:relative;
+        margin-left:20px;
+    }
+    h2{
+        font-weight:normal;
+    }
+    h1{
+        padding-bottom:0;
+        margin-bottom:0;
+    }
+    a{
+        color:black;
+        text-decoration:underline;
+        font-size:20px;
+        font-weight:bold;
+    }
+    canvas{
+        position:absolute;
+        z-index:10;
+    }
+
+    .lineItUp{
+        margin-left:10px;
+    }
+
+    .row{
+        width: 100%;
+        display: flex;
+    }
+
+    .col{
+        flex: 1;
+    }
+
+    </style>
+</head>
+<body>
+    <h1>Drag and drop fake heatmap generator w/ Javascript and HTMLCanvas</h1>
+    <div class="row">
+        <div class="col">
+            <p>Drag image in the canvas and press <i>a</i> to toggle heat on mouse.</p>
+
+        </div>
+        <div class="col">
+            <a id="download">Download as image</a>
+
+        </div>
+    </div>
+        <!-- <button type="button" name="button" id="download" onclick="downloadCanvas()">Save heatmap</button> -->
+
+        <div>
+            <canvas id="c" class="lineItUp" width="1920" height="1080" style="border: 2px solid black;">nono canvas support</canvas>
+        </div>
+        <!-- <a href="#" id="tmpLink"></a> -->
+        <script>
+        var activateHeat = false;
+        var holder = document.getElementById('c')
+        holder.ondragover = function () { this.className = 'hover'; return false; };
+        holder.ondragend = function () { this.className = ''; return false; };
+        holder.ondrop = function (e) {
+            this.className = '';
+            e.preventDefault();
+            var file = e.dataTransfer.files[0],
+            reader = new FileReader();
+            reader.onload = function (event) {
+                console.log(event.target);
+                holder.style.background = 'url(' + event.target.result + ') no-repeat';
+            };
+            console.log(file);
+            reader.readAsDataURL(file);
+            return false;
+        };
+
+
+        function downloadCanvas(link, canvasId, filename) {
+            link.href = document.getElementById(canvasId).toDataURL();
+            link.download = filename;
+        }
+
+        document.onkeypress = shortcut;
+
+        function shortcut(e) {
+            var key = e.which || e.keyCode;
+
+            if( key == 97 ){
+                activateHeat = !activateHeat;
+            }
+        }
+
+        /**
+        * The event handler for the link's onclick event. We give THIS as a
+        * parameter (=the link element), ID of the canvas and a filename.
+        */
+        document.getElementById('download').addEventListener('click', function() {
+            downloadCanvas(this, 'c', 'test.png');
+        }, false);
+
+        </script>
+        <script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+        ga('create', 'UA-4087256-3', 'robertivan.com');
+        ga('send', 'pageview');
+        </script>
+
+
+    </body></html>
